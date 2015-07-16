@@ -13,7 +13,7 @@ def read(*parts):
     return codecs.open(os.path.join(os.path.abspath(os.path.dirname(__file__)), *parts), 'r').read()
 
 setup(name="hitchpostgres",
-      version="0.2",
+      version="0.3",
       description="Plugin to run Postgres using the Hitch testing framework.",
       long_description=read('README.rst'),
       classifiers=[
@@ -38,7 +38,7 @@ setup(name="hitchpostgres",
       author_email='colm.oconnor.github@gmail.com',
       url='https://hitch.readthedocs.org/',
       license='AGPL',
-      install_requires=['hitchserve', ],
+      install_requires=['hitchserve', 'hitchtest', ],
       packages=find_packages(exclude=[]),
       package_data={},
       zip_safe=False,
