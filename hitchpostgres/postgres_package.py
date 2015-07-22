@@ -16,7 +16,7 @@ class PostgresPackage(HitchPackage):
             raise RuntimeError("Postgres version needed is {}, output is: {}.".format(self.version, version_output))
 
     def build(self):
-        raise NotImplementedError("Postgres cannot be build from scratch yet.")
+        raise NotImplementedError("Postgres cannot be built from scratch yet.")
 
     @property
     def initdb(self):
