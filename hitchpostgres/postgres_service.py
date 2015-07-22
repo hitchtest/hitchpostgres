@@ -109,29 +109,31 @@ class PostgresService(Service):
 
     def psql(self, command=None, database="template1", filename=None):
         """Run PSQL command."""
-        fullcmd = [
-            self.postgres_package.psql, "-d", database, "-p", str(self.port), "--host", self.pgdata,
-        ]
-        if command is not None:
-            fullcmd = fullcmd + ["-c", command, ]
-        if filename is not None:
-            fullcmd = fullcmd + ["-f", filename, ]
-        return self.subcommand(*fullcmd)
+        return self.subcommand(
+            [
+                self.postgres_package.psql,
+                "-d", database, "-p", str(self.port), "--host", self.pgdata,
+            ] + (
+                ["-c", command, ] if command is not None else []
+            ) + (
+                ["-f", filename, ] if filename is not None else []
+            )
+        )
 
     def pg_dump(self, filename=None, database="template1"):
         """Dump a database."""
-        fullcmd = [
-            self.postgres_package.pg_dump, "-d", database, "-p",
-            str(self.port), "--host", self.pgdata,
-        ]
-        if filename is not None:
-            fullcmd = fullcmd + ["-f", filename, ]
-        return self.subcommand(*fullcmd)
+        return self.subcommand(
+            [
+                self.postgres_package.pg_dump,
+                "-d", database, "-p", str(self.port), "--host", self.pgdata,
+            ] + (
+                ["-f", filename, ] if filename is not None else []
+            )
+        )
 
     def pg_restore(self, filename, database="template1"):
         """Restore a database."""
-        fullcmd = [
+        return self.subcommand([
             self.postgres_package.pg_restore, "-d", database, "-p",
             str(self.port), "--host", self.pgdata, filename
-        ]
-        return self.subcommand(*fullcmd)
+        ])
