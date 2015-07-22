@@ -13,7 +13,7 @@ class PostgresPackage(HitchPackage):
     def verify(self):
         version_output = check_output([self.postgres, "--version"]).decode('utf8')
         if self.version not in version_output:
-            raise HitchException("Postgres version needed is {}, output is: {}.".format(self.version, version_output))
+            raise RuntimeError("Postgres version needed is {}, output is: {}.".format(self.version, version_output))
 
     def build(self):
         raise NotImplementedError("Postgres cannot be build from scratch yet.")
