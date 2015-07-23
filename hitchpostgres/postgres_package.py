@@ -54,10 +54,11 @@ class PostgresPackage(HitchPackage):
             raise RuntimeError("Postgres version needed is {}, output is: {}.".format(self.version, version_output))
 
     def build(self):
-        utils.download_file("postgresql-{}.tar.gz".format(self.version), "https://ftp.postgresql.org/pub/source/v{0}/postgresql-{0}.tar.gz".format(self.version))
+        download_to = join(self.get_downloads_directory(), "postgresql-{}.tar.gz".format(self.version))
+        utils.download_file(download_to, "https://ftp.postgresql.org/pub/source/v{0}/postgresql-{0}.tar.gz".format(self.version))
         if not exists(self.directory):
             makedirs(self.directory)
-            utils.extract_archive("postgresql-{}.tar.gz".format(self.version), self.directory)
+            utils.extract_archive(download_to, self.directory)
             full_directory = join(self.directory, "postgresql-{}".format(self.version))
             chdir(full_directory)
             call(["./configure", "--prefix={}".format(full_directory)])
