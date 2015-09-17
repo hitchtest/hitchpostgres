@@ -1,3 +1,4 @@
+from hitchtest.environment import checks
 from hitchserve import Service
 from os.path import join
 import signal
@@ -46,6 +47,7 @@ class PostgresService(Service):
         self.users = users
         self.databases = databases
         self.pgdata = pgdata
+        checks.freeports([port, ])
         kwargs['log_line_ready_checker'] = lambda line: "database system is ready to accept connections" in line
         super(PostgresService, self).__init__(**kwargs)
 

@@ -1,5 +1,6 @@
 from hitchtest import HitchPackage, utils
 from subprocess import check_output, call
+from hitchtest.environment import checks
 from os.path import join, exists
 from os import makedirs, chdir
 
@@ -47,6 +48,10 @@ class PostgresPackage(HitchPackage):
         else:
             self.directory = directory
         self.bin_directory = bin_directory
+
+        checks.i_am_root(False)
+
+        checks.packages(["build-essential", "libpq-dev", "libreadline6-dev", "zlib1g-dev", "libssl-dev", ])
 
     def verify(self):
         version_output = check_output([self.postgres, "--version"]).decode('utf8')
