@@ -51,7 +51,7 @@ class PostgresPackage(HitchPackage):
 
         checks.i_am_root(False)
 
-        checks.packages(["build-essential", "libpq-dev", "libreadline6-dev", "zlib1g-dev", "libssl-dev", ])
+        checks.packages(["libpq-dev", "libreadline6-dev", "zlib1g-dev", "libssl-dev", ])
 
     def verify(self):
         version_output = check_output([self.postgres, "--version"]).decode('utf8')
