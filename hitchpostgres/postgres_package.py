@@ -1,8 +1,9 @@
 from hitchtest import HitchPackage, utils
-from subprocess import check_output, call
 from hitchtest.environment import checks
+from subprocess import check_output, call
 from os.path import join, exists
 from os import makedirs, chdir
+import hitchpostgres
 
 
 ISSUES_URL = "http://github.com/hitchtest/hitchpostgres/issues"
@@ -51,7 +52,7 @@ class PostgresPackage(HitchPackage):
 
         checks.i_am_root(False)
 
-        checks.packages(["libpq-dev", "libreadline6-dev", "zlib1g-dev", "libssl-dev", ])
+        checks.packages(hitchpostgres.UNIXPACKAGES)
 
     def verify(self):
         version_output = check_output([self.postgres, "--version"]).decode('utf8')
