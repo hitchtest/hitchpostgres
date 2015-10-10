@@ -14,7 +14,7 @@ def read(*parts):
     return codecs.open(os.path.join(os.path.abspath(os.path.dirname(__file__)), *parts), 'r').read()
 
 setup(name="hitchpostgres",
-      version="0.6.5",
+      version="0.6.6",
       description="Plugin to run Postgres using the Hitch testing framework.",
       long_description=read('README.rst'),
       classifiers=[
