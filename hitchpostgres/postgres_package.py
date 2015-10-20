@@ -40,7 +40,7 @@ class PostgresPackage(HitchPackage):
 
     name = "Postgres"
 
-    def __init__(self, version, directory=None, bin_directory=None):
+    def __init__(self, version="9.4.5", directory=None, bin_directory=None):
         super(PostgresPackage, self).__init__()
         self.version = self.check_version(version, self.VERSIONS, ISSUES_URL)
 
