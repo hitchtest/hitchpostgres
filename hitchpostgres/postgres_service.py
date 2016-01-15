@@ -21,6 +21,9 @@ class PostgresDatabase(object):
         """Dump this database to 'filename'."""
         return self.database_of.pg_dump(filename, database=self.name)
 
+    def pg_restore(self, filename=None):
+        return self.database_of.pg_restore(filename, database=self.name)
+
     @property
     def database_of(self):
         return self._database_of
@@ -39,12 +42,11 @@ class PostgresService(Service):
 
     def __init__(self, postgres_package, port=15432, users=None, databases=None, initialize=True, **kwargs):
         self.postgres_package = postgres_package
-        self.encoding = encoding
-        self.locale = locale
         self.port = port
         self.users = users
         self.databases = databases
         self.initialize = initialize
+        self._pgdata = None
         checks.freeports([port, ])
         kwargs['log_line_ready_checker'] = lambda line: "database system is ready to accept connections" in line
         super(PostgresService, self).__init__(**kwargs)
@@ -118,7 +120,7 @@ class PostgresService(Service):
         )
 
     def pg_dump(self, filename=None, database="template1"):
-        """Dump a database."""
+        """Dump a database with pg_dump."""
         return self.subcommand(
             *tuple([
                 self.postgres_package.pg_dump,
@@ -129,8 +131,12 @@ class PostgresService(Service):
         )
 
     def pg_restore(self, filename, database="template1"):
-        """Restore a database."""
-        return self.subcommand(*tuple([
-            self.postgres_package.pg_restore, "-d", database, "-p",
-            str(self.port), "--host", self.pgdata, filename
-        ]))
+        """Restore a database filename with pg_restore."""
+        return self.subcommand(
+            *tuple([
+                self.postgres_package.pg_restore,
+                "-d", database, "-p", str(self.port), "--host", self.pgdata,
+            ] + (
+                [filename, ] if filename is not None else []
+            ))
+        )
